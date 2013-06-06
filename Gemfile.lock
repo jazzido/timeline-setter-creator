@@ -1,0 +1,37 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    cssmin (1.0.3)
+    cuba (3.1.0)
+      rack
+    fastercsv (1.5.5)
+    httparty (0.11.0)
+      multi_json (~> 1.0)
+      multi_xml (>= 0.5.2)
+    jammit (0.6.6)
+      cssmin (>= 1.0.3)
+      jsmin (>= 1.0.1)
+    jsmin (1.0.1)
+    json (1.8.0)
+    kompress (0.0.3)
+    multi_json (1.7.6)
+    multi_xml (0.5.4)
+    rack (1.5.2)
+    table_fu (0.3.4)
+      fastercsv
+    tilt (1.4.1)
+    timeline_setter (0.3.2)
+      jammit
+      json
+      kompress (>= 0.0.2)
+      table_fu
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  cuba
+  httparty
+  rack
+  tilt
+  timeline_setter

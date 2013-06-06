@@ -1,0 +1,35 @@
+<nav class="nav-tabs" data-toggle="tabs" data-height="equal">
+  <ul>
+    <li>
+      <a href="#tab1" class="active">Upload CSV</a>
+    </li>
+    <li>
+      <a href="#tab2">Link to CSV</a>
+    </li>
+  </ul>
+</nav>
+<div id="tab1">
+  <form action="/new" enctype="multipart/form-data" method="post" class="forms">
+    <ul>
+      <li>
+        <input name="file" type="file" id="file" accept="text/csv">
+      </li>
+      <li>
+        <input type="submit" class="btn" value="Submit">
+      </li>
+    </ul>
+  </form>
+</div>
+<div id="tab2">
+  <form action="/new" method="post" class="forms">
+    <ul>
+      <li>
+        <label for="url" class="bold">Link to CSV:</label>
+        <input type="url" name="url" value="" placeholder="URL" />
+      </li>
+      <li>
+        <input type="submit" class="btn" value="Submit">
+      </li>
+    </ul>
+  </form>
+</div>
