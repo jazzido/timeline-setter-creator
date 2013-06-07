@@ -46,6 +46,10 @@ button#append-form-row {
   margin-bottom: 20px;
 }
 
+#timeline-preview button {
+  border: 0;
+}
+
 
 /* =Footer
 -----------------------------------------------------------------------------*/

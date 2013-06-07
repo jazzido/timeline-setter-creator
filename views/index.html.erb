@@ -27,7 +27,21 @@
                                        function() {
                                            $('#manual-input ul:first-child').clone().appendTo('#manual-input');
                                            $('#manual-input ul.form-row:last-child li:last-child').css('visibility','visible');
+                                           datePickerFallback($('#manual-input ul.form-row:last-child input[name=date]'));
                                        });
+
+
+        var datePickerFallback = function(input) {
+            if ($(input)[0].type == 'text')
+                $(input).removeClass('hasDatepicker').datepicker(
+                    {
+                        dateFormat: 'mm-dd-y'
+                    }
+                );
+        };
+
+        // fallback to jquery ui if needed (firefox)
+        datePickerFallback($('.form-row li:first-child input[name=date]'));
 
         $('button#manual-input-submit').on('click', function(e) {
             $(':input', $(this)).removeClass('input-error');
@@ -76,7 +90,7 @@
 
         });
 
-        $('#timeline-preview a').on('click', function() {
+        $('#timeline-preview button').on('click', function() {
             if ($('#timeline-preview span').html() == '▶') {
                 $('iframe').css('height', '300px');
                 $('#timeline-preview span').html('▼');
@@ -91,74 +105,14 @@
     });
   </script>
   <div id="timeline-preview">
-    <span>▶</span><a href="#">See preview</a>
+    <span>▶</span><button type="button">See preview</button>
     <iframe style="width: 100%; height: 0px;"></iframe>
   </div>
   <form class="forms" id="manual-input">
     <ul class="multicolumn form-row">
-      <li style="width: 22%;">
+      <li style="width: 15%;">
         <label>Date <span style="color: red;">*</span></label>
-        <ul class="multicolumn date-input">
-          <li style="width: 33%;">
-            <select name="month">
-              <option value=""></option>
-              <option value="Jan">January</option>
-              <option value="Feb">February</option>
-              <option value="Mar">March</option>
-              <option value="Apr">April</option>
-              <option value="May">May</option>
-              <option value="Jun">June</option>
-              <option value="Jul">July</option>
-              <option value="Aug">August</option>
-              <option value="Sep">September</option>
-              <option value="Oct">October</option>
-              <option value="Nov">November</option>
-              <option value="Dec">December</option>
-            </select>
-            <div class="descr">Month</div>
-          </li>
-          <li style="width: 20%;">
-            <select name="day">
-              <option value=""></option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-              <option value="13">13</option>
-              <option value="14">14</option>
-              <option value="15">15</option>
-              <option value="16">16</option>
-              <option value="17">17</option>
-              <option value="18">18</option>
-              <option value="19">19</option>
-              <option value="20">20</option>
-              <option value="21">21</option>
-              <option value="22">22</option>
-              <option value="23">23</option>
-              <option value="24">24</option>
-              <option value="25">25</option>
-              <option value="26">26</option>
-              <option value="27">27</option>
-              <option value="28">28</option>
-              <option value="29">29</option>
-              <option value="30">30</option>
-              <option value="31">31</option>
-            </select>
-            <div class="descr">Day</div>
-          </li>
-          <li class="width-33">
-            <input type="text" name="year" value="" style="width: 50px"/>
-            <div class="descr">Year</div>
-          </li>
-        </ul>
+        <input type="date" name="date" required>
       </li>
       <li style="width: 10%;">
         <label>Display date</label>
@@ -166,7 +120,7 @@
       </li>
       <li style="width:10%">
         <label>Description <span style="color: red;">*</span></label>
-        <textarea name="description" style="width: 80px; height: 100px;"></textarea>
+        <textarea name="description" style="width: 80px; height: 100px;" required></textarea>
       </li>
       <li style="width:10%">
         <label>Link</label>

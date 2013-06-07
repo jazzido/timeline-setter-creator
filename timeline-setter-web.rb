@@ -53,7 +53,7 @@ def generate_from_hash(h)
     csv << ["date", "display_date", "description", "link", "series", "html"]
     events.each do |event|
       csv << [
-              "#{event['month']} #{event['day']} #{event['year']}",
+              event['date'],
               event['display_date'],
               event['description'],
               event['link'],
