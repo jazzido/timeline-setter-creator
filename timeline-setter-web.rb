@@ -47,8 +47,8 @@ def generate_timeline(csv, options={})
                                :interval => options[:interval]).timeline
 end
 
-def generate_from_json(json)
-  events = JSON.load(json)
+def generate_from_hash(h)
+  events = h
   csv_string = CSV.generate do |csv|
     csv << ["date", "display_date", "description", "link", "series", "html"]
     events.each do |event|
@@ -73,9 +73,14 @@ Cuba.define do
     end
 
     on 'preview' do
-      r = generate_from_json req.params['json']
-      puts r.inspect
-      res.write r
+      h = JSON.parse(req.params['json'])
+      if h.size < 2
+        res.write "Can't preview. Please create at least 2 valid events'"
+      else
+        res.write generate_from_hash h
+      end
+
+
     end
 
     on 'timeline' do
@@ -85,13 +90,11 @@ Cuba.define do
   end
 
   on post do
-
-
     on 'timeline' do
       timeline_html = if req.params['file'] # upload
                         generate_timeline req.params['file'][:tempfile].read
                       elsif req.params['json'] # json from manual input interface
-                        generate_from_json req.params['json']
+                        generate_from_hash JSON.parse(req.params['json'])
                       else
                         raise 'bad request'
                       end
