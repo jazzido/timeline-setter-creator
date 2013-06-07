@@ -26,6 +26,7 @@
         $('button#append-form-row').on('click',
                                        function() {
                                            $('#manual-input ul:first-child').clone().appendTo('#manual-input');
+                                           $('#manual-input ul.form-row:last-child :input').val('');
                                            $('#manual-input ul.form-row:last-child li:last-child').css('visibility','visible');
                                            datePickerFallback($('#manual-input ul.form-row:last-child input[name=date]'));
                                        });
@@ -86,10 +87,6 @@
             return valid;
         };
 
-        $('.form-row :input').on('change', function() {
-
-        });
-
         $('#timeline-preview button').on('click', function() {
             if ($('#timeline-preview span').html() == '▶') {
                 $('iframe').css('height', '300px');
@@ -109,7 +106,7 @@
     <iframe style="width: 100%; height: 0px;"></iframe>
   </div>
   <form class="forms" id="manual-input">
-    <ul class="multicolumn form-row">
+    <ul class="multicolumn form-row" style="width: 100%;">
       <li style="width: 15%;">
         <label>Date <span style="color: red;">*</span></label>
         <input type="date" name="date" required>
@@ -118,21 +115,21 @@
         <label>Display date</label>
         <input name="display_date" type="text" style="width: 100px"></input>
       </li>
-      <li style="width:10%">
+      <li style="width:20%;">
         <label>Description <span style="color: red;">*</span></label>
-        <textarea name="description" style="width: 80px; height: 100px;" required></textarea>
+        <textarea name="description" style="width: 100%; height: 100px;" required></textarea>
       </li>
-      <li style="width:10%">
+      <li style="width:15%">
         <label>Link</label>
-        <input name="link" type="url" style="width: 80px;"  />
+        <input name="link" type="url" style="width: 100%;"  />
       </li>
       <li style="width:10%">
         <label>Series</label>
         <input name="series" type="text" style="width: 80px;"/>
       </li>
-      <li style="width:15%">
+      <li style="width:20%">
         <label>HTML</label>
-        <textarea name="html" style="height: 100px;"></textarea>
+        <textarea name="html" style="width: 100%; height: 100px;"></textarea>
       </li>
       <li style="visibility: hidden">
         <button type="button" class="remove-row">X</button>
