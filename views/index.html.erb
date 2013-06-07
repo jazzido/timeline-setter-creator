@@ -1,10 +1,10 @@
 <nav class="nav-tabs" data-toggle="tabs" data-height="equal">
   <ul>
     <li>
-      <a href="#tab1" class="active">Upload CSV</a>
+      <a href="#tab3" class="active">Manual input</a>
     </li>
     <li>
-      <a href="#tab2">Link to CSV</a>
+      <a href="#tab1" >Upload CSV</a>
     </li>
   </ul>
 </nav>
@@ -20,16 +20,115 @@
     </ul>
   </form>
 </div>
-<div id="tab2">
-  <form action="/new" method="post" class="forms">
-    <ul>
-      <li>
-        <label for="url" class="bold">Link to CSV:</label>
-        <input type="url" name="url" value="" placeholder="URL" />
+<div id="tab3">
+  <script type="text/javascript">
+    $(function() {
+        $('button#append-form-row').on('click',
+                                       function() {
+                                           $('#manual-input ul:first-child').clone().appendTo('#manual-input');
+                                       });
+
+        $('button#manual-input-submit').on('click', function(e) {
+            var f = $('.form-row').map(function() {
+                return [$(':input', $(this)).serializeArray()];
+            });
+            return false;
+        });
+
+        $('.form-row :input').on('change', function() {
+            console.log($(this));
+        });
+    });
+  </script>
+  <form class="forms" id="manual-input">
+    <ul class="multicolumn form-row">
+      <li style="width: 22%;">
+        <label>Date</label>
+        <ul class="multicolumn">
+          <li style="width: 33%;">
+            <select name="month">
+              <option value=""></option>
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+            <div class="descr">Month</div>
+          </li>
+          <li style="width: 20%;">
+            <select name="day">
+              <option value=""></option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
+              <option value="24">24</option>
+              <option value="25">25</option>
+              <option value="26">26</option>
+              <option value="27">27</option>
+              <option value="28">28</option>
+              <option value="29">29</option>
+              <option value="30">30</option>
+              <option value="31">31</option>
+            </select>
+            <div class="descr">Day</div>
+          </li>
+          <li class="width-33">
+            <input type="text" name="year" value="" style="width: 50px"/>
+            <div class="descr">Year</div>
+          </li>
+        </ul>
       </li>
-      <li>
-        <input type="submit" class="btn" value="Submit">
+      <li style="width: 10%;">
+        <label>Display date</label>
+        <input name="display_date" type="text" style="width: 100px"></input>
+      </li>
+      <li style="width:10%">
+        <label>Description</label>
+        <textarea name="description" style="width: 80px; height: 100px;"></textarea>
+      </li>
+      <li style="width:10%">
+        <label>Link</label>
+        <input name="link" type="url" style="width: 80px;"  />
+      </li>
+      <li style="width:10%">
+        <label>Series</label>
+        <input name="series" type="text" style="width: 80px;"/>
+      </li>
+      <li style="width:15%">
+        <label>HTML</label>
+        <textarea name="html" style="height: 100px;"></textarea>
       </li>
     </ul>
   </form>
+  <button id="append-form-row" class="btn">Append a new event</button>
+  <button type="submit" class="btn" id="manual-input-submit">Submit</button>
+
 </div>

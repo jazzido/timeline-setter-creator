@@ -38,6 +38,14 @@ input[type=url] {
     width: 250px;
 }
 
+.form-row {
+  border-bottom: 1px solid #ddd;
+}
+
+button#append-form-row {
+  margin-bottom: 20px;
+}
+
 
 /* =Footer
 -----------------------------------------------------------------------------*/
