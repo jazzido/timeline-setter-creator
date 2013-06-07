@@ -1,9 +1,11 @@
 require 'fileutils'
 require 'securerandom'
+require 'json'
+#require 'tempfile'
+require 'csv'
 
 require 'cuba'
 require 'cuba/render'
-require 'httparty'
 require 'timeline_setter'
 
 # hack into TimelineSetter, we need to change their layout template
@@ -38,25 +40,29 @@ DEFAULT_OPTIONS = {
   :interval => ''
 }
 
-def generate_timeline(path_to_csv, options={})
-  sheet = File.open(path_to_csv).read
-  events = TimelineSetter::Parser.new sheet
+def generate_timeline(csv, options={})
+  events = TimelineSetter::Parser.new csv
   options.merge!(DEFAULT_OPTIONS)
-  html = TimelineSetter::Timeline.new(:events => events.events,
-                                      :interval => options[:interval]).timeline
-
-
-  # FileUtils.mkdir_p outdir unless File.exists? outdir
-  # File.open(File.join(outdir, 'timeline.html'), 'w+') do |doc|
-  #   doc.write html
-  # end
-
+  TimelineSetter::Timeline.new(:events => events.events,
+                               :interval => options[:interval]).timeline
 end
 
-def get_csv(url)
-  r = HTTParty.get(url)
-  raise 'not csv' unless r.headers['content-type'].include?('csv')
-
+def generate_from_json(json)
+  events = JSON.load(json)
+  csv_string = CSV.generate do |csv|
+    csv << ["date", "display_date", "description", "link", "series", "html"]
+    events.each do |event|
+      csv << [
+              "#{event['month']} #{event['day']} #{event['year']}",
+              event['display_date'],
+              event['description'],
+              event['link'],
+              event['series'],
+              event['html']
+             ]
+    end
+  end
+  generate_timeline csv_string
 end
 
 Cuba.define do
@@ -66,21 +72,26 @@ Cuba.define do
       res.write view('index.html')
     end
 
+    on 'preview' do
+      r = generate_from_json req.params['json']
+      puts r.inspect
+      res.write r
+    end
+
     on 'timeline' do
       res.write view('timeline.html', timeline_url: req.params['timeline'])
     end
+
   end
 
   on post do
-    on 'new' do
-      timeline_html = if req.params['file'] # upload
-                        generate_timeline req.params['file'][:tempfile].path
-                      elsif req.params['url'] # link
-                        begin
-                          csv_path = get_csv(req.params['url'])
-                        rescue
 
-                     end
+
+    on 'timeline' do
+      timeline_html = if req.params['file'] # upload
+                        generate_timeline req.params['file'][:tempfile].read
+                      elsif req.params['json'] # json from manual input interface
+                        generate_from_json req.params['json']
                       else
                         raise 'bad request'
                       end

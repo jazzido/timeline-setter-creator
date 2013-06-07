@@ -9,7 +9,7 @@
   </ul>
 </nav>
 <div id="tab1">
-  <form action="/new" enctype="multipart/form-data" method="post" class="forms">
+  <form action="/timeline" enctype="multipart/form-data" method="post" class="forms">
     <ul>
       <li>
         <input name="file" type="file" id="file" accept="text/csv">
@@ -26,40 +26,94 @@
         $('button#append-form-row').on('click',
                                        function() {
                                            $('#manual-input ul:first-child').clone().appendTo('#manual-input');
+                                           $('#manual-input ul.form-row:last-child li:last-child').css('visibility','visible');
                                        });
 
         $('button#manual-input-submit').on('click', function(e) {
+            $(':input', $(this)).removeClass('input-error');
+            var valid = true;
             var f = $('.form-row').map(function() {
-                return [$(':input', $(this)).serializeArray()];
+                valid = valid && validateRow($(this));
+                return $(this).serializeHash();
             });
+            $('<form action="/timeline" method="POST">' +
+              '<textarea name="json">' + JSON.stringify(f.toArray()) + '</textarea>' +
+              '</form>').submit();
             return false;
         });
 
+        $(document).on('click', 'button.remove-row', function(e) {
+            $(this).parent().parent().remove();
+            e.preventDefault();
+            updatePreview();
+            return false;
+        });
+
+        var updatePreview = function() {
+            var json = JSON.stringify($('.form-row').map(function() {
+                return $(this).serializeHash();
+            }).toArray());
+            $('iframe').attr('src', '/preview?json=' + escape(json));
+        };
+
+        $(document).on('change', '#manual-input :input', updatePreview);
+
+        var MANDATORY_FIELDS = ['day', 'month', 'year', 'description']
+        // argument must be a .form-row
+        var validateRow = function(row, markErrors) {
+            var valid = true;
+            _.each(MANDATORY_FIELDS, function(f) {
+                var i = $(':input[name='+f+']');
+                if (i.val() == '') {
+                    if (markErrors) i.addClass('input-error');
+                    valid = false;
+                }
+            });
+            return valid;
+        };
+
         $('.form-row :input').on('change', function() {
-            console.log($(this));
+
+        });
+
+        $('#timeline-preview a').on('click', function() {
+            if ($('#timeline-preview span').html() == '▶') {
+                $('iframe').css('height', '300px');
+                $('#timeline-preview span').html('▼');
+                $(this).html('Hide preview');
+            }
+            else {
+                $('iframe').css('height', '0px');
+                $('#timeline-preview span').html('▶');
+                $(this).html('See preview');
+            }
         });
     });
   </script>
+  <div id="timeline-preview">
+    <span>▶</span><a href="#">See preview</a>
+    <iframe style="width: 100%; height: 0px;"></iframe>
+  </div>
   <form class="forms" id="manual-input">
     <ul class="multicolumn form-row">
       <li style="width: 22%;">
         <label>Date</label>
-        <ul class="multicolumn">
+        <ul class="multicolumn date-input">
           <li style="width: 33%;">
             <select name="month">
               <option value=""></option>
-              <option value="1">January</option>
-              <option value="2">February</option>
-              <option value="3">March</option>
-              <option value="4">April</option>
-              <option value="5">May</option>
-              <option value="6">June</option>
-              <option value="7">July</option>
-              <option value="8">August</option>
-              <option value="9">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
+              <option value="Jan">January</option>
+              <option value="Feb">February</option>
+              <option value="Mar">March</option>
+              <option value="Apr">April</option>
+              <option value="May">May</option>
+              <option value="Jun">June</option>
+              <option value="Jul">July</option>
+              <option value="Aug">August</option>
+              <option value="Sep">September</option>
+              <option value="Oct">October</option>
+              <option value="Nov">November</option>
+              <option value="Dec">December</option>
             </select>
             <div class="descr">Month</div>
           </li>
@@ -125,6 +179,9 @@
       <li style="width:15%">
         <label>HTML</label>
         <textarea name="html" style="height: 100px;"></textarea>
+      </li>
+      <li style="visibility: hidden">
+        <button type="button" class="remove-row">X</button>
       </li>
     </ul>
   </form>
