@@ -34,7 +34,7 @@ end
 
 
 Cuba.plugin Cuba::Render
-Cuba.use Rack::Static, root: 'static', urls: ["/css", "/js", "/timelines"]
+Cuba.use Rack::Static, root: 'public', urls: ["/css", "/js", "/timelines"]
 
 DEFAULT_OPTIONS = {
   :interval => ''
@@ -99,12 +99,12 @@ Cuba.define do
                         raise 'bad request'
                       end
 
-      outdir = File.join('static/timelines', SecureRandom.uuid)
+      outdir = File.join('public/timelines', SecureRandom.uuid)
       FileUtils.mkdir_p(outdir)
       timeline_path = File.join(outdir, 'timeline.html')
       File.open(timeline_path, 'w') { |f| f.write timeline_html }
 
-      res.redirect "/timeline?timeline=#{timeline_path.gsub(/^static\//, '')}"
+      res.redirect "/timeline?timeline=#{timeline_path.gsub(/^public\//, '')}"
     end
   end
 end
