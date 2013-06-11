@@ -1,2 +1,14 @@
+<script type="text/javascript">
+    $(function() {
+        $('a#get-embed').on('click', function(e) {
+            e.preventDefault();
+            $('textarea').toggleClass('hidden');
+            return false;
+        });
+    });
+</script>
 <iframe src="<%= timeline_url %>" scrolling="no"></iframe>
-<p style="font-size: 70%"><a href="<%= timeline_url %>" target="_blank">Open in new window</a></p>
+<p style="font-size: 70%"><a href="<%= timeline_url %>" target="_blank">Open in new window</a> - <a href="#" id="get-embed">Get embed code</a></p>
+<textarea id="embed-code" style="width: 300px; height: 100px; font-family: monospace;" class="hidden">
+  <iframe src="http://<%= req.env['HTTP_HOST'] %>/<%= timeline_url %>" width="645" height="400" frameborder="0" scrolling="no"></iframe>
+</textarea>

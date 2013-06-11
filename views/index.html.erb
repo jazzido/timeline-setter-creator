@@ -10,6 +10,7 @@
 </nav>
 <div id="tab1">
   <form action="/timeline" enctype="multipart/form-data" method="post" class="forms">
+    <p>Uploaded file must contain the following columns: <code>date, display_date, description, link, series, html</code>. See <a href="https://raw.github.com/propublica/timeline-setter/master/spec/test_data.csv">an example</a> or read <a href="http://propublica.github.io/timeline-setter/">the documentation</a>.</p>
     <ul>
       <li>
         <input name="file" type="file" id="file" accept="text/csv">
@@ -137,6 +138,6 @@
     </ul>
   </form>
   <button id="append-form-row" class="btn">Append a new event</button>
-  <button type="submit" class="btn" id="manual-input-submit">Submit</button>
+  <button type="submit" class="btn" id="manual-input-submit">Save this timeline</button>
 
 </div>
