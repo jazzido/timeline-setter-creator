@@ -7,4 +7,4 @@ Simple web-based creation tool for [ProPublica](http://propublica.org)'s [timeli
 
   - Timelines can't be edited, only created.
   - UI improvements
-  - Show HTML to embed timelines
+  - ~~Show HTML to embed timelines~~
