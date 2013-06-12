@@ -1,9 +1,28 @@
+GIT
+  remote: https://github.com/jazzido/timeline-setter.git
+  revision: d12d58b27175bf2620d9c1cda17e936ad20a7219
+  specs:
+    timeline_setter (0.3.2)
+      chronic
+      jammit
+      json
+      kompress (>= 0.0.2)
+      table_fu
+
 GEM
   remote: http://rubygems.org/
   specs:
+    chronic (0.9.1)
+    columnize (0.3.6)
     cssmin (1.0.3)
     cuba (3.1.0)
       rack
+    debugger (1.6.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.1)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.2)
     fastercsv (1.5.5)
     jammit (0.6.6)
       cssmin (>= 1.0.3)
@@ -15,17 +34,13 @@ GEM
     table_fu (0.3.4)
       fastercsv
     tilt (1.4.1)
-    timeline_setter (0.3.2)
-      jammit
-      json
-      kompress (>= 0.0.2)
-      table_fu
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   cuba
+  debugger
   rack
   tilt
-  timeline_setter
+  timeline_setter!

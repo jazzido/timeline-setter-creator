@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
-gem 'timeline_setter'
+gem 'timeline_setter', :git => 'https://github.com/jazzido/timeline-setter.git'
 gem 'cuba'
 gem 'rack'
 gem 'tilt'
+gem 'debugger'
