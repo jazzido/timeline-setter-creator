@@ -6,6 +6,9 @@
     <li>
       <a href="#tab1" >Upload CSV</a>
     </li>
+    <li>
+      <a href="#tab2">Google Spreadsheet</a>
+    </li>
   </ul>
 </nav>
 <div id="tab1">
@@ -140,4 +143,17 @@
   <button id="append-form-row" class="btn">Append a new event</button>
   <button type="submit" class="btn" id="manual-input-submit">Save this timeline</button>
 
+</div>
+<div id="tab2">
+  <form action="/timeline" method="post" class="forms">
+    <p>Uploaded file must contain the following columns: <code>date, display_date, description, link, series, html</code>. See <a href="https://raw.github.com/propublica/timeline-setter/master/spec/test_data.csv">an example</a> or read <a href="http://propublica.github.io/timeline-setter/">the documentation</a>.</p>
+    <ul>
+      <li>
+        <input name="google_spreadsheet_csv" type="url" style="width: 400px">
+      </li>
+      <li>
+        <input type="submit" class="btn" value="Submit">
+      </li>
+    </ul>
+  </form>
 </div>

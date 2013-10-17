@@ -4,6 +4,7 @@ require 'securerandom'
 require 'json'
 #require 'tempfile'
 require 'csv'
+require 'net/https'
 
 require 'cuba'
 require 'cuba/render'
@@ -14,6 +15,7 @@ TMPL = <<-eot
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <link href="/css/timeline-setter.css" rel="stylesheet" />
     <script src="/js/jquery-2.0.2.js"></script>
     <script src="/js/underscore-min.js"></script>
@@ -66,6 +68,16 @@ def generate_from_hash(h)
   generate_timeline csv_string
 end
 
+def generate_from_gspreadsheet(link)
+  uri = URI.parse(link)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  request = Net::HTTP::Get.new(uri.request_uri)
+  response = http.request(request)
+
+  generate_timeline response.body
+end
+
 Cuba.define do
 
   on get do
@@ -80,8 +92,6 @@ Cuba.define do
       else
         res.write generate_from_hash h
       end
-
-
     end
 
     on 'timeline' do
@@ -96,6 +106,8 @@ Cuba.define do
                         generate_timeline req.params['file'][:tempfile].read
                       elsif req.params['json'] # json from manual input interface
                         generate_from_hash JSON.parse(req.params['json'])
+                      elsif req.params['google_spreadsheet_csv'] # link to csv in google spreadsheet
+                        generate_from_gspreadsheet req.params['google_spreadsheet_csv']
                       else
                         raise 'bad request'
                       end
